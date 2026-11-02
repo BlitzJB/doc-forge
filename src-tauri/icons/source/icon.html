@@ -1,0 +1,25 @@
+<!doctype html><html><head><link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,900&display=block" rel="stylesheet">
+<style>html,body{margin:0;background:transparent}</style></head><body>
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+<defs>
+ <filter id="sh" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="12" stdDeviation="14" flood-color="#1a120c" flood-opacity="0.32"/></filter>
+ <linearGradient id="verm" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#DA5636"/><stop offset="1" stop-color="#B03A20"/></linearGradient>
+ <linearGradient id="ink" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2E2924"/><stop offset="1" stop-color="#191511"/></linearGradient>
+ <linearGradient id="paper" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FBF8F2"/><stop offset="1" stop-color="#EDE6DA"/></linearGradient>
+ <linearGradient id="gloss" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".14"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/></linearGradient>
+</defs>
+<rect x="100" y="100" width="824" height="824" rx="186" fill="url(#verm)" filter="url(#sh)"/>
+<rect x="100" y="100" width="824" height="824" rx="186" fill="url(#gloss)"/>
+<rect x="101.5" y="101.5" width="821" height="821" rx="185" fill="none" stroke="#000" stroke-opacity=".14" stroke-width="3"/>
+<rect x="104" y="104" width="816" height="816" rx="182" fill="none" stroke="#fff" stroke-opacity=".12" stroke-width="2"/>
+<g id="g"><text font-family="Source Serif 4" font-weight="900" font-size="620" fill="#FBF6EC" style="filter:drop-shadow(0 6px 10px rgba(80,20,8,.28))">¶</text></g>
+<script>
+document.fonts.ready.then(() => {
+  const g = document.getElementById("g"), b = g.getBBox();
+  // Optical center sits a touch above the geometric one.
+  g.setAttribute("transform", `translate(${512 - (b.x + b.width / 2)} ${500 - (b.y + b.height / 2)})`);
+  document.body.dataset.ready = "1";
+});
+</script>
+</svg></body></html>

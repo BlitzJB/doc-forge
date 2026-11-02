@@ -1,0 +1,75 @@
+#!/bin/sh
+# df: open documents in Doc Forge, like `code` for VS Code.
+#
+#   df notes.md            open notes.md (if it doesn't exist, Doc Forge offers to create it)
+#   df ~/a.md ./b.md       several at once (the last one is shown)
+#
+# `df` is also the system's disk-usage command, so anything that isn't a list of
+# documents goes to it untouched: no arguments, flags (`df -h`), folders (`df .`),
+# devices. A path counts as a document if it is a regular file, or doesn't exist yet
+# (Doc Forge then asks whether to create it; this script never creates files).
+
+SYSTEM_DF=/bin/df
+APP_NAME="Doc Forge"
+# This script's repo, for the development build (resolves the install symlink).
+self=$0
+while [ -L "$self" ]; do
+  link=$(readlink "$self")
+  case $link in /*) self=$link ;; *) self=$(dirname "$self")/$link ;; esac
+done
+REPO=$(cd "$(dirname "$self")/.." 2>/dev/null && pwd)
+
+[ $# -eq 0 ] && exec "$SYSTEM_DF"
+for a in "$@"; do
+  case $a in -*) exec "$SYSTEM_DF" "$@" ;; esac
+  if [ -e "$a" ] && [ ! -f "$a" ]; then exec "$SYSTEM_DF" "$@"; fi
+  if [ ! -e "$a" ] && [ ! -d "$(dirname "$a")" ]; then
+    echo "df: no such folder: $(dirname "$a")" >&2
+    exit 1
+  fi
+done
+
+# Where to send them: the app this script ships in (installed from Doc Forge), else an
+# installed app, else a running development build.
+app=
+case $self in
+  */Contents/Resources/df) app=${self%/Contents/Resources/df} ;;
+esac
+if [ -z "$app" ]; then
+  for a in "/Applications/$APP_NAME.app" "$HOME/Applications/$APP_NAME.app"; do
+    [ -d "$a" ] && app=$a && break
+  done
+fi
+dev="$REPO/src-tauri/target/debug/doc-forge"
+if [ -z "$app" ]; then
+  if [ ! -x "$dev" ]; then
+    echo "df: Doc Forge isn't installed (looked in /Applications and ~/Applications)" >&2
+    exit 1
+  fi
+  if ! pgrep -qf "$dev"; then
+    echo "df: Doc Forge isn't installed; start it with \`npm run desktop\` in $REPO" >&2
+    exit 1
+  fi
+fi
+
+# Absolute paths.
+all_exist=1
+set -- "$@" --end--
+while [ "$1" != --end-- ]; do
+  [ -e "$1" ] || all_exist=0
+  abs="$(cd "$(dirname "$1")" && pwd)/$(basename "$1")"
+  shift
+  set -- "$@" "$abs"
+done
+shift
+
+if [ -n "$app" ]; then
+  # Launches Doc Forge if needed; a running one just receives the files.
+  [ "$all_exist" = 1 ] && exec open -a "$app" "$@"
+  # `open` refuses paths that don't exist, so start the app itself with them: it asks
+  # whether to create the file, and a second launch hands them to the running one.
+  nohup "$app/Contents/MacOS/doc-forge" "$@" >/dev/null 2>&1 &
+  exit 0
+fi
+# A second launch of the development build hands its files to the running one and exits.
+nohup "$dev" "$@" >/dev/null 2>&1 &

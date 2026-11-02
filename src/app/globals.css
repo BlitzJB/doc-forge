@@ -1,26 +1,429 @@
 @import "tailwindcss";
 
+/*
+ * The manuscript and its margin.
+ * Neutrals are tinted faintly warm (hue 75). One accent: the editor's vermilion ink,
+ * reserved for everything the agent touches.
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  color-scheme: light;
+  --paper: oklch(0.986 0.003 75);
+  --margin: oklch(0.966 0.004 75);
+  --well: oklch(0.945 0.005 75);
+  --ink: oklch(0.2 0.01 60);
+  --ink-2: oklch(0.36 0.009 60);
+  --graphite: oklch(0.56 0.008 65);
+  --faint: oklch(0.7 0.006 70);
+  --rule: oklch(0.905 0.005 75);
+  --rule-2: oklch(0.84 0.007 75);
+
+  /* The editor's ink: one hue drives the strike, numbers and Forge's identity. */
+  --ink-h: 34;
+  --ink-c: 0.165;
+  --ink-dl: 0;
+  --pencil: oklch(calc(0.55 + var(--ink-dl)) var(--ink-c) var(--ink-h));
+  --pencil-deep: oklch(calc(0.47 + var(--ink-dl)) calc(var(--ink-c) * 0.9) var(--ink-h));
+  --pencil-wash: oklch(0.935 calc(var(--ink-c) * 0.27) var(--ink-h));
+  --pencil-wash-2: oklch(0.89 calc(var(--ink-c) * 0.42) var(--ink-h));
+  --pencil-soft: oklch(calc(0.55 + var(--ink-dl)) var(--ink-c) var(--ink-h) / 0.55);
+
+  --del-ink: oklch(0.47 0.008 65);
+  --del-wash: oklch(0.925 0.006 70);
+  --del-wash-2: oklch(0.88 0.01 65);
+  --del-wash-3: oklch(0.84 0.012 65);
+  /* Added text: blue-black ink. */
+  --add: oklch(0.4 0.1 258);
+  --add-wash: oklch(0.948 0.022 250);
+  --add-wash-2: oklch(0.9 0.045 250);
+  --add-wash-3: oklch(0.85 0.07 250);
+  --selection: oklch(0.9 0.04 45);
+  --mark-bg: oklch(0.93 0.07 95);
+  --inv-hover: oklch(0.32 0.01 60);
+  --inv-muted: oklch(0.78 0.006 70);
+  --shadow-pop: 0 18px 40px -16px oklch(0.2 0.01 60 / 0.3);
+  --shadow-bar: 0 10px 30px -10px oklch(0.2 0.01 60 / 0.5);
+  --shadow-dialog: 0 40px 80px -24px oklch(0.2 0.01 60 / 0.35), 0 0 0 1px oklch(0.2 0.01 60 / 0.06);
+  --backdrop: oklch(0.2 0.01 60 / 0.22);
+
+  /* Manuscript typography (Settings → Appearance) */
+  --doc-font: var(--font-text), Georgia, serif;
+  --doc-size: 18.5px;
+  --doc-leading: 1.72;
+  --doc-measure: 720px;
+
+  --ease: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out: cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+/* Dark: lamplit desk. Same warm hue, inverted lightness; washes become low tints. */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --paper: oklch(0.19 0.006 70);
+  --margin: oklch(0.215 0.006 70);
+  --well: oklch(0.255 0.007 70);
+  --ink: oklch(0.94 0.006 80);
+  --ink-2: oklch(0.84 0.007 80);
+  --graphite: oklch(0.64 0.008 75);
+  --faint: oklch(0.5 0.007 70);
+  --rule: oklch(0.285 0.006 70);
+  --rule-2: oklch(0.36 0.007 70);
+  --pencil: oklch(calc(0.7 + var(--ink-dl) * 0.6) var(--ink-c) var(--ink-h));
+  --pencil-deep: oklch(calc(0.77 + var(--ink-dl) * 0.5) calc(var(--ink-c) * 0.8) var(--ink-h));
+  --pencil-wash: oklch(0.29 calc(var(--ink-c) * 0.3) var(--ink-h));
+  --pencil-wash-2: oklch(0.35 calc(var(--ink-c) * 0.45) var(--ink-h));
+  --pencil-soft: oklch(calc(0.7 + var(--ink-dl) * 0.6) var(--ink-c) var(--ink-h) / 0.6);
+  --del-ink: oklch(0.66 0.008 70);
+  --del-wash: oklch(0.27 0.006 70);
+  --del-wash-2: oklch(0.32 0.008 70);
+  --del-wash-3: oklch(0.37 0.01 70);
+  --add: oklch(0.82 0.07 250);
+  --add-wash: oklch(0.26 0.028 255);
+  --add-wash-2: oklch(0.32 0.045 255);
+  --add-wash-3: oklch(0.4 0.08 255);
+  --selection: oklch(0.38 0.05 45);
+  --mark-bg: oklch(0.42 0.08 95);
+  --inv-hover: oklch(0.86 0.006 80);
+  --inv-muted: oklch(0.42 0.006 70);
+  --shadow-pop: 0 18px 40px -16px oklch(0 0 0 / 0.6);
+  --shadow-bar: 0 10px 30px -10px oklch(0 0 0 / 0.6);
+  --shadow-dialog: 0 40px 80px -24px oklch(0 0 0 / 0.65), 0 0 0 1px oklch(1 0 0 / 0.06);
+  --backdrop: oklch(0 0 0 / 0.45);
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans: var(--font-ui), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono-ui), ui-monospace, monospace;
+  --font-serif: var(--doc-font);
+  --color-paper: var(--paper);
+  --color-margin: var(--margin);
+  --color-well: var(--well);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-graphite: var(--graphite);
+  --color-faint: var(--faint);
+  --color-rule: var(--rule);
+  --color-rule-2: var(--rule-2);
+  --color-pencil: var(--pencil);
+  --color-pencil-deep: var(--pencil-deep);
+  --color-pencil-wash: var(--pencil-wash);
+  --color-pencil-soft: var(--pencil-soft);
+  --color-add: var(--add);
+  --color-add-wash: var(--add-wash);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html, body { background: var(--paper); color: var(--ink); }
+body { font-family: var(--font-sans); font-size: 14px; }
+::selection { background: var(--selection); }
+* { scrollbar-width: thin; scrollbar-color: var(--rule-2) transparent; }
+button { cursor: pointer; }
+button:focus-visible { outline: 1.5px solid var(--ink); outline-offset: 2px; }
+/* Text fields signal focus with their border (or caret, for the bare title field). */
+input[type="range"]:focus-visible { outline: none; }
+input:focus-visible { outline: none; }
+textarea:focus-visible { outline: none; }
+
+/* Small caps label used across the UI */
+.label { font-family: var(--font-mono); font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--graphite); }
+.num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+/* Underline-on-hover text buttons: the UI's primary affordance */
+.tbtn { color: var(--graphite); transition: color 160ms var(--ease); }
+.tbtn:hover { color: var(--ink); }
+.tbtn:disabled { opacity: 0.35; pointer-events: none; }
+.tbtn-ink { color: var(--ink); font-weight: 500; text-decoration: underline; text-decoration-color: var(--rule-2); text-underline-offset: 4px; transition: text-decoration-color 160ms var(--ease); }
+.tbtn-ink:hover { text-decoration-color: var(--ink); }
+.tbtn-pencil { color: var(--ink); font-weight: 500; text-decoration: underline; text-decoration-color: var(--pencil-soft); text-decoration-thickness: 1.5px; text-underline-offset: 4px; transition: text-decoration-color 160ms var(--ease); }
+.tbtn-pencil:hover { text-decoration-color: var(--pencil); }
+
+/* ---------- Manuscript ---------- */
+.prose-doc {
+  font-family: var(--font-serif);
+  font-size: var(--doc-size);
+  line-height: var(--doc-leading);
+  color: var(--ink-2);
+  outline: none;
+  font-optical-sizing: auto;
+}
+.prose-doc > * + * { margin-top: 0.9em; }
+.prose-doc h1 { font-size: 2.35em; line-height: 1.12; font-weight: 500; letter-spacing: -0.022em; color: var(--ink); margin-bottom: 0.65em; text-wrap: balance; }
+.prose-doc h2 { font-family: var(--font-sans); font-size: 0.68em; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--graphite); margin-top: 2.6em; margin-bottom: -0.2em; }
+.prose-doc h3 { font-size: 1.1em; font-weight: 600; color: var(--ink); margin-top: 1.6em; }
+.prose-doc ul { list-style: none; padding-left: 0; }
+.prose-doc ul > li { position: relative; padding-left: 1.6em; }
+.prose-doc ul > li::before { content: ""; position: absolute; left: 0.35em; top: 0.86em; width: 0.5em; height: 1px; background: var(--graphite); }
+.prose-doc ol { list-style: decimal; padding-left: 1.5em; }
+.prose-doc ol > li::marker { font-family: var(--font-mono); font-size: 0.75em; color: var(--graphite); }
+.prose-doc li + li { margin-top: 0.3em; }
+.prose-doc blockquote {
+  position: relative;
+  margin-left: 0; padding: 0 0 0 1.6em;
+  font-style: italic; color: var(--ink);
+  font-size: 1.06em;
+}
+.prose-doc blockquote::before {
+  content: "\201C"; position: absolute; left: -0.05em; top: -0.18em;
+  font-size: 2.2em; line-height: 1; color: var(--pencil); font-style: normal;
+}
+.prose-doc mark { background: var(--mark-bg); color: inherit; padding: 0 2px; border-radius: 1px; }
+.prose-doc strong { color: var(--ink); font-weight: 600; }
+.prose-doc a { color: var(--ink); text-decoration: underline; text-decoration-color: var(--rule-2); text-underline-offset: 3px; }
+.prose-doc code { font-family: var(--font-mono); font-size: 0.8em; background: var(--well); padding: 0.1em 0.35em; border-radius: 2px; }
+.prose-doc hr { border: 0; text-align: center; margin: 2.4em 0; }
+.prose-doc hr::after { content: "\2042"; color: var(--graphite); }
+.prose-doc p.is-editor-empty:first-child::before { content: attr(data-placeholder); color: var(--faint); float: left; height: 0; pointer-events: none; }
+
+/* ---------- Proof marks (pending agent edits) ---------- */
+/* The strike is a drawn line (background), so it can be animated across the text. */
+.sg-del {
+  --strike: linear-gradient(var(--pencil), var(--pencil));
+  color: var(--del-ink);
+  background-color: var(--del-wash);
+  background-image: var(--strike);
+  background-repeat: no-repeat;
+  background-position: 0 56%;
+  background-size: 100% 2px;
+  border-radius: 2px;
+  -webkit-box-decoration-break: clone; box-decoration-break: clone;
+  transition: background-color 180ms ease, opacity 160ms var(--ease-out);
+}
+.sg-del.sg-fresh { animation: strike-in 260ms var(--ease-out) both; animation-delay: calc(var(--i, 0) * 70ms); }
+@keyframes strike-in { from { background-size: 0% 2px; } }
+.sg-widget { position: relative; }
+.sg-del + .sg-widget > .sg-ins { margin-left: 0.28em; }
+.sg-ins {
+  display: inline;
+  color: var(--add);
+  background: var(--add-wash);
+  border-radius: 2px;
+  padding: 0 1px;
+  -webkit-box-decoration-break: clone; box-decoration-break: clone;
+  transition: background-color 180ms ease;
+  animation: ink-in 380ms var(--ease-out) backwards;
+  animation-delay: calc(140ms + var(--i, 0) * 70ms);
+}
+/* Opacity + blur only: clip-path on wrapped inline text clips every line after the first. */
+@keyframes ink-in { from { opacity: 0; filter: blur(3px); } }
+.sg-n {
+  display: inline-block;
+  font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+  color: var(--pencil); margin-left: 1px; vertical-align: 0.75em; line-height: 0;
+  user-select: none;
+  animation: fade-up 200ms var(--ease-out) both;
+  animation-delay: calc(360ms + var(--i, 0) * 70ms);
+}
+@keyframes fade-up { from { opacity: 0; transform: translateY(3px); } }
+/* Proposed new paragraphs: a block in the insertion ink */
+.sg-insert { display: block; position: relative; }
+.sg-ins-block {
+  margin: 0; color: var(--add); background-color: var(--add-wash);
+  border-radius: 2px; box-shadow: 0 0 0 5px var(--add-wash);
+  transition: background-color 180ms ease, box-shadow 180ms ease;
+  animation: ink-in 380ms var(--ease-out) backwards;
+  animation-delay: calc(140ms + var(--i, 0) * 70ms);
+}
+.sg-ins-block + .sg-ins-block { margin-top: 0.9em; }
+.sg-widget.sg-active .sg-ins-block { background-color: var(--add-wash-2); box-shadow: 0 0 0 5px var(--add-wash-2); }
+.sg-widget.sg-pulse .sg-ins-block { animation: ink-in 380ms var(--ease-out) backwards, pulse-add 700ms var(--ease-out); animation-delay: calc(140ms + var(--i, 0) * 70ms), 0ms; }
+.sg-widget.sg-active .sg-ins { background-color: var(--add-wash-2); }
+.sg-active.sg-del { background-color: var(--del-wash-2); }
+.sg-leaving.sg-del, .sg-widget.sg-leaving { opacity: 0; }
+.sg-widget { transition: opacity 160ms var(--ease-out); }
+/* Listing the finished entrance first keeps it from replaying when the pulse is added or removed. */
+.sg-pulse.sg-del { animation: pulse 700ms var(--ease-out); }
+.sg-widget.sg-pulse .sg-ins { animation: ink-in 380ms var(--ease-out) backwards, pulse-add 700ms var(--ease-out); animation-delay: calc(140ms + var(--i, 0) * 70ms), 0ms; }
+@keyframes pulse { 0% { background-color: var(--del-wash-2); } 35% { background-color: var(--del-wash-3); } 100% { } }
+@keyframes pulse-add { 0% { background-color: var(--add-wash-2); } 35% { background-color: var(--add-wash-3); } 100% { } }
+/* Accepted text keeps a vermilion tint that fades out */
+.sg-settle { animation: settle 1100ms var(--ease-out) both; border-radius: 2px; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+@keyframes settle { from { background-color: var(--add-wash-2); color: var(--add); } to { background-color: transparent; } }
+
+.sg-actions {
+  position: absolute; left: 0; bottom: 100%; z-index: 5;
+  display: inline-flex; align-items: center;
+  background: var(--ink); color: var(--paper);
+  border-radius: 3px; padding: 2px;
+  font-family: var(--font-sans); font-size: 11.5px; font-style: normal; font-weight: 500; line-height: 1;
+  white-space: nowrap;
+  opacity: 0; transform: translateY(3px) scale(0.97); transform-origin: bottom left; pointer-events: none;
+  transition: opacity 140ms var(--ease-out), transform 140ms var(--ease-out);
+  box-shadow: var(--shadow-bar);
+}
+.sg-widget:hover .sg-actions, .sg-widget.sg-active .sg-actions { opacity: 1; transform: none; pointer-events: auto; }
+.sg-btn { padding: 5px 8px; border-radius: 2px; color: var(--paper); transition: background-color 120ms ease, scale 120ms var(--ease-out); }
+.sg-btn:hover { background: var(--inv-hover); }
+.sg-btn:active { scale: 0.95; }
+.sg-reject { color: var(--inv-muted); }
+
+/* ---------- Diff (history) ---------- */
+.diff-ins { color: var(--add); background: var(--add-wash); text-decoration: none; border-radius: 2px; padding: 0 1px; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.diff-del { color: var(--del-ink); background: var(--del-wash); text-decoration: line-through; text-decoration-color: var(--pencil); text-decoration-thickness: 2px; border-radius: 2px; padding: 0 1px; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.diff-row { position: relative; }
+.diff-row + .diff-row { margin-top: 0.9em; }
+.diff-row > * { margin-top: 0 !important; margin-bottom: 0 !important; }
+.diff-row:has(> .diff-li) + .diff-row:has(> .diff-li) { margin-top: 0.3em; }
+.diff-row + .diff-row:has(> h2) { margin-top: 2.4em; }
+.diff-row:has(> h1) { margin-bottom: 0.5em; }
+.prose-doc .diff-same > * { color: var(--faint); }
+.prose-doc .diff-same > blockquote::before { color: var(--faint); }
+.diff-block-added > .diff-gutter { color: var(--add); }
+.prose-doc .diff-same > h1, .prose-doc .diff-same > h2 { color: var(--graphite); }
+.diff-block-modified > :not(.diff-gutter) { color: var(--ink); }
+.diff-gutter {
+  position: absolute; left: -3.4rem; top: 0.42em; width: 2rem; text-align: right;
+  font-family: var(--font-mono); font-size: 13px; font-weight: 500; font-style: normal; line-height: 1; color: var(--pencil);
+}
+.diff-block-added > :not(.diff-gutter) { color: var(--add); background: var(--add-wash); border-radius: 2px; box-shadow: 0 0 0 4px var(--add-wash); }
+.diff-block-removed > :not(.diff-gutter) { color: var(--del-ink); background: var(--del-wash); border-radius: 2px; box-shadow: 0 0 0 4px var(--del-wash); text-decoration: line-through; text-decoration-color: var(--pencil); text-decoration-thickness: 2px; }
+.diff-li { position: relative; padding-left: 1.6em; }
+.diff-li::before { content: ""; position: absolute; left: 0.35em; top: 0.86em; width: 0.5em; height: 1px; background: var(--graphite); }
+
+/* ---------- Margin (agent) ---------- */
+.cite { font-family: var(--font-mono); font-size: 9.5px; font-weight: 500; color: var(--pencil); vertical-align: 0.7em; line-height: 0; margin-left: 1px; }
+@keyframes breathe { 0%, 100% { opacity: 0.25; } 50% { opacity: 1; } }
+.caret { display: inline-block; width: 1.5px; height: 1.05em; margin-left: 1px; vertical-align: -0.15em; background: var(--pencil); animation: breathe 1s steps(2) infinite; }
+
+.fade-in { animation: fade 220ms var(--ease) both; }
+@keyframes fade { from { opacity: 0; transform: translateY(3px); } to { opacity: 1; transform: none; } }
+
+/* ---------- Microinteractions ---------- */
+/* Press feedback for anything clickable */
+.press { transition: scale 140ms var(--ease-out), color 160ms ease, background-color 160ms ease, opacity 160ms ease, text-decoration-color 160ms ease; }
+.press:active:not(:disabled) { scale: 0.97; }
+.tbtn, .tbtn-ink, .tbtn-pencil { transition: scale 140ms var(--ease-out), color 160ms ease, text-decoration-color 160ms ease; }
+.tbtn:active, .tbtn-ink:active, .tbtn-pencil:active { scale: 0.96; }
+
+/* A changed value slides in slightly blurred */
+.swap-in { display: inline-block; animation: swap-in 220ms var(--ease-out) both; }
+@keyframes swap-in { from { opacity: 0; transform: translateY(4px); filter: blur(2px); } }
+.swap-fade { animation: swap-fade 200ms var(--ease-out) both; }
+@keyframes swap-fade { from { opacity: 0; filter: blur(2px); } }
+
+/* Sliding underline for segmented text toggles */
+.slide-line {
+  position: absolute; left: 0; bottom: -5px; height: 1.5px; width: 1px;
+  background: var(--pencil); transform-origin: left center;
+  transition: transform 240ms var(--ease-in-out);
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* Underline that draws in under an on/off text toggle */
+.toggle-line { position: absolute; left: 0; right: 0; bottom: -5px; height: 1.5px; background: var(--pencil); transform-origin: left center; transform: scaleX(0); transition: transform 200ms var(--ease-out); }
+.toggle-line[data-on="true"] { transform: scaleX(1); }
+
+/* Two icons sharing one slot (send / stop) */
+.morph { display: grid; }
+.morph > * { grid-area: 1 / 1; transition: opacity 180ms var(--ease-out), transform 180ms var(--ease-out), filter 180ms var(--ease-out); }
+.morph > [data-on="false"] { opacity: 0; transform: scale(0.6); filter: blur(2px); }
+
+/* Toggle box (web search) */
+.check-dot { transition: transform 160ms var(--ease-out), opacity 160ms var(--ease-out); }
+.check-dot[data-on="false"] { transform: scale(0.4); opacity: 0; }
+
+/* Collapsible (reasoning) */
+.reveal { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 220ms var(--ease-out); }
+.reveal[data-open="true"] { grid-template-rows: 1fr; }
+.reveal > * { min-height: 0; overflow: hidden; opacity: 0; transition: opacity 180ms var(--ease-out); }
+.reveal[data-open="true"] > * { opacity: 1; }
+
+/* Selection bubble: Tiptap flips inline visibility; the inner bar rises from the selection */
+.bubble { opacity: 0; transform: translateY(4px) scale(0.97); transform-origin: bottom center; transition: opacity 150ms var(--ease-out), transform 150ms var(--ease-out); }
+[style*="visibility: visible"] > .bubble { opacity: 1; transform: none; }
+
+/* History rail */
+.node { box-shadow: 0 0 0 2.5px var(--paper); transform: scale(0.75); transition: transform 160ms var(--ease-out), opacity 200ms ease, box-shadow 160ms ease; }
+.node[data-current="true"] { transform: scale(0.9); }
+.node[data-strong="true"] { transform: scale(1.25); box-shadow: 0 0 0 2.5px var(--paper), 0 0 0 3.5px var(--rule-2); }
+.rail-enter .tick-grow { animation: node-in 240ms var(--ease-out) both; animation-delay: calc(var(--i, 0) * 30ms); }
+@keyframes node-in { from { opacity: 0; transform: scale(0.6); } }
+.rail-enter { animation: rail-in 200ms var(--ease-out) both; }
+@keyframes rail-in { from { opacity: 0; transform: translateX(-6px); } }
+
+.popover {
+  position: fixed; top: 0; z-index: 30;
+  transform-origin: left center;
+  transition: opacity 160ms var(--ease-out), scale 160ms var(--ease-out), translate 200ms var(--ease-out);
+}
+.popover[data-open="false"] { opacity: 0; scale: 0.97; pointer-events: none; transition-duration: 120ms, 120ms, 0ms; }
+.popover[data-instant="true"] { transition-property: opacity, scale; }
+@starting-style { .popover[data-open="true"] { opacity: 0; scale: 0.97; } }
+
+.stagger > * { animation: fade-up 260ms var(--ease-out) both; }
+.stagger > *:nth-child(2) { animation-delay: 50ms; }
+.stagger > *:nth-child(3) { animation-delay: 100ms; }
+.stagger > *:nth-child(4) { animation-delay: 150ms; }
+.stagger > *:nth-child(5) { animation-delay: 200ms; }
+.stagger > *:nth-child(n+6) { animation-delay: 240ms; }
+
+/* ---------- Activity marks ---------- */
+.scribe { position: relative; display: inline-block; width: 27px; height: 12px; vertical-align: middle; }
+.scribe svg { display: block; overflow: visible; }
+.scribe path {
+  fill: none; stroke: var(--pencil); stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round;
+  stroke-dasharray: 1 2; stroke-dashoffset: 1;
+  animation: scribe-draw 1.9s var(--ease-in-out) infinite;
+}
+.scribe-nib {
+  position: absolute; left: 0; top: 0; width: 3px; height: 3px; border-radius: 50%;
+  background: var(--ink); offset-rotate: 0deg; offset-anchor: center;
+  animation: scribe-nib 1.9s var(--ease-in-out) infinite;
+}
+/* Stroke and nib share keyframe stops and easing, so the nib stays on the stroke's head. */
+@keyframes scribe-draw { 0% { stroke-dashoffset: 1; opacity: 1; } 58% { stroke-dashoffset: 0; opacity: 1; } 82% { stroke-dashoffset: 0; opacity: 0; } 100% { stroke-dashoffset: 1; opacity: 0; } }
+@keyframes scribe-nib { 0% { offset-distance: 0%; opacity: 1; } 58% { offset-distance: 100%; opacity: 1; } 70% { offset-distance: 100%; opacity: 0; } 100% { offset-distance: 0%; opacity: 0; } }
+
+.proofread { display: inline-flex; flex-direction: column; gap: 3px; vertical-align: middle; padding: 1px 0; }
+.proofread-line { position: relative; display: block; height: 1.5px; background: var(--rule-2); border-radius: 1px; overflow: hidden; }
+.proofread-mark { position: absolute; inset: 0; background: var(--pencil); transform-origin: left center; transform: scaleX(0); animation: proofread 1.5s var(--ease-out) infinite; }
+@keyframes proofread { 0% { transform: scaleX(0); opacity: 1; } 32% { transform: scaleX(1); opacity: 1; } 60% { transform: scaleX(1); opacity: 0; } 100% { transform: scaleX(1); opacity: 0; } }
+
+/* ---------- Settings dialog ---------- */
+dialog.settings:focus { outline: none; }
+dialog.settings {
+  margin: auto; padding: 0; border: 1px solid var(--rule); border-radius: 6px;
+  background: var(--paper); color: var(--ink); box-shadow: var(--shadow-dialog);
+  max-width: none; max-height: none;
+  opacity: 0; scale: 0.97;
+  transition: opacity 180ms var(--ease-out), scale 180ms var(--ease-out), overlay 180ms allow-discrete, display 180ms allow-discrete;
+}
+dialog.settings[open] { opacity: 1; scale: 1; }
+@starting-style { dialog.settings[open] { opacity: 0; scale: 0.97; } }
+dialog.settings::backdrop { background: transparent; transition: background-color 180ms var(--ease-out), overlay 180ms allow-discrete, display 180ms allow-discrete; }
+dialog.settings[open]::backdrop { background: var(--backdrop); }
+@starting-style { dialog.settings[open]::backdrop { background: transparent; } }
+
+/* Model picker: drops from its trigger */
+.picker-pop { transform-origin: top center; animation: picker-in 150ms var(--ease-out) both; }
+@keyframes picker-in { from { opacity: 0; transform: translateY(-3px) scale(0.985); } }
+
+/* Range slider in ink */
+.range { -webkit-appearance: none; appearance: none; background: transparent; height: 18px; cursor: pointer; }
+.range::-webkit-slider-runnable-track { height: 2px; border-radius: 2px; background: linear-gradient(var(--ink), var(--ink)) 0 / var(--fill, 50%) 100% no-repeat, var(--rule-2); }
+.range::-moz-range-track { height: 2px; border-radius: 2px; background: var(--rule-2); }
+.range::-moz-range-progress { height: 2px; background: var(--ink); }
+.range::-webkit-slider-thumb { -webkit-appearance: none; width: 14px; height: 14px; margin-top: -6px; border-radius: 50%; background: var(--paper); border: 1.5px solid var(--ink); transition: scale 140ms var(--ease-out); }
+.range::-moz-range-thumb { width: 12px; height: 12px; border-radius: 50%; background: var(--paper); border: 1.5px solid var(--ink); }
+.range:active::-webkit-slider-thumb { scale: 1.15; }
+.range:focus-visible { outline: none; }
+.range:focus-visible::-webkit-slider-thumb { box-shadow: 0 0 0 3px var(--rule-2); }
+
+/* Selectable option tiles (theme, typeface, ink) */
+.choice { transition: scale 140ms var(--ease-out), border-color 160ms ease, box-shadow 160ms ease; }
+.choice:active { scale: 0.98; }
+.choice[aria-checked="true"] { border-color: var(--ink); box-shadow: 0 0 0 1px var(--ink); }
+
+::view-transition-old(root), ::view-transition-new(root) { animation-duration: 240ms; animation-timing-function: var(--ease-out); }
+
+@media (prefers-reduced-motion: reduce) {
+  /* Keep opacity and color changes; drop movement, scale and drawing. */
+  .fade-in, .caret, .swap-in, .stagger > *, .rail-enter, .rail-enter .tick-grow, .sg-n { animation: none; }
+  .sg-del, .sg-ins, .sg-ins-block { animation: none; }
+  .swap-fade, .sg-settle, .sg-pulse.sg-del, .sg-widget.sg-pulse .sg-ins { animation-duration: 1ms; }
+  .press:active, .tbtn:active, .tbtn-ink:active, .tbtn-pencil:active, .sg-btn:active { scale: 1; }
+  .slide-line, .toggle-line, .node, .popover, .bubble, .sg-actions, .morph > * { transition-property: opacity; }
+  .scribe path { animation: none; stroke-dashoffset: 0; }
+  .scribe-nib { display: none; }
+  .proofread-mark { animation: none; transform: scaleX(1); opacity: 0.6; }
+  .proofread-line + .proofread-line .proofread-mark { opacity: 0; }
+  dialog.settings, .choice { scale: 1; }
+  .bubble, .sg-actions, .morph > [data-on="false"] { transform: none; filter: none; }
 }

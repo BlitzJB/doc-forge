@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Doc Forge: an editor in the margin</title>
+  <meta name="description" content="A writing app for Mac. Forge proposes edits as proof marks you accept or decline, and Doc Forge keeps every version of every file." />
+  <meta name="theme-color" content="#f8f6f2" media="(prefers-color-scheme: light)" />
+  <meta name="theme-color" content="#1c1a17" media="(prefers-color-scheme: dark)" />
+  <meta property="og:title" content="Doc Forge" />
+  <meta property="og:description" content="Your editor, in the margin." />
+  <meta property="og:image" content="assets/icon-256.png" />
+  <link rel="icon" href="assets/favicon-32.png" sizes="32x32" />
+  <link rel="apple-touch-icon" href="assets/icon-256.png" />
+  <link rel="preload" href="assets/fonts/Literata-italic-latin-93934a65.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="assets/fonts/Literata-normal-latin-0ace6a53.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="stylesheet" href="assets/fonts.css" />
+  <link rel="stylesheet" href="styles.css" />
+  <script>document.documentElement.classList.add("js");</script>
+</head>
+<body>
+  <header class="nav" data-nav>
+    <a class="brand" href="#top" aria-label="Doc Forge">
+      <img src="assets/icon-64.png" width="26" height="26" alt="" />
+      <span>Doc Forge</span>
+    </a>
+    <a class="btn btn-ink btn-sm" href="downloads/Doc-Forge.dmg" download>Download</a>
+  </header>
+
+  <main id="top">
+    <!-- Hero -->
+    <section class="hero">
+      <img class="hero-icon" src="assets/icon-256.png" width="68" height="68" alt="" />
+      <h1 class="display">
+        Your
+        <span class="proof" data-proof><span class="proof-del">assistant</span><span class="proof-ins">editor<svg class="proof-loop" viewBox="0 0 200 76" preserveAspectRatio="none" aria-hidden="true"><path d="M170 10 C 128 2, 56 2, 26 12 C 6 19, 2 50, 30 62 C 72 76, 154 74, 186 58 C 204 48, 198 18, 164 8 C 146 3, 124 4, 108 9" pathLength="1" /></svg></span></span>,
+        <br />in the margin.
+      </h1>
+      <p class="sub">Doc Forge marks up your draft. You decide what stays.</p>
+      <a class="btn btn-ink btn-lg" href="downloads/Doc-Forge.dmg" download>
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2.5v8m0 0L4.75 7.25M8 10.5l3.25-3.25M3 13.5h10" /></svg>
+        Download for Mac
+      </a>
+      <p class="meta">Free preview &middot; macOS 13+ &middot; Apple silicon</p>
+
+      <figure class="stage" data-stage aria-label="Forge tightens an opening paragraph; the author accepts its marks.">
+        <div class="win">
+          <div class="win-bar">
+            <span class="lights" aria-hidden="true"><i></i><i></i><i></i></span>
+            <span class="win-path">the-long-way-round.md</span>
+            <span class="win-ver" data-ver>v6</span>
+          </div>
+          <div class="win-body">
+            <div class="pane-doc">
+              <div class="rail" aria-hidden="true">
+                <i style="--y:0"></i><i style="--y:16"></i><i style="--y:24"></i><i style="--y:62"></i><i style="--y:70"></i><i style="--y:100"></i>
+                <i class="rail-new" data-rail-new></i>
+              </div>
+              <article class="ms">
+                <h3>The long way round</h3>
+                <p>For eleven years I took the same train to work, and <span class="cut" data-cut="1">I think it is fair to say that</span> I never once looked out of the window<span class="cut" data-cut="2"> in any real way</span>.</p>
+                <p>Then the line flooded in March, and the replacement bus went the long way round: through the reservoir villages, past a quarry, <span class="cut" data-cut="3">and very slowly</span> along a river I had never seen.</p>
+                <p class="dim">It took forty minutes longer. I started leaving earlier.</p>
+              </article>
+            </div>
+            <div class="pane-margin">
+              <div class="m-head"><span class="m-title" data-title>Editor</span><span class="m-state" data-state>idle</span></div>
+              <div class="m-feed" data-feed></div>
+              <div class="m-compose">
+                <span class="m-input" data-input><span class="ph">Write a note to the editor</span></span>
+                <span class="m-send" data-send aria-hidden="true"><svg viewBox="0 0 16 16"><path d="M8 13V3m0 0L3.5 7.5M8 3l4.5 4.5" /></svg></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </figure>
+    </section>
+
+    <!-- Marks -->
+    <section class="feature" aria-labelledby="f1">
+      <h2 id="f1" class="h2" data-reveal>Edits arrive as proof marks.</h2>
+      <p class="sub" data-reveal>Forge proposes each change where it belongs. Nothing changes until you accept it.</p>
+      <div class="sheet try" data-try data-reveal>
+        <p class="try-p">
+          Our survey suggests that <span class="mk" data-mk="1"><del>most people basically</del><ins>three in four readers</ins><sup>1</sup></span> skim the opening, <span class="mk" data-mk="2"><del>which is kind of</del><ins>so that is</ins><sup>2</sup></span> where an argument is won. <span class="mk" data-mk="3"><del>We will try to put</del><ins>We put</ins><sup>3</sup></span> the finding first.
+        </p>
+        <div class="try-foot">
+          <span class="try-count" data-try-count>3 marks</span>
+          <button class="btn btn-quiet btn-sm" data-try-reset hidden>Again</button>
+          <button class="btn btn-ink btn-sm" data-accept-all>Accept all</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- History -->
+    <section class="feature" aria-labelledby="f2">
+      <h2 id="f2" class="h2" data-reveal>Doc Forge saves every version.</h2>
+      <p class="sub" data-reveal>Scrub back through any file&rsquo;s history. Your git repositories are left alone.</p>
+      <div class="sheet hist" data-hist data-reveal>
+        <div class="hist-rail" role="listbox" aria-label="Versions" data-hist-rail></div>
+        <div class="hist-doc">
+          <div class="hist-meta" data-hist-meta aria-live="polite"></div>
+          <div class="hist-text" data-hist-text></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- df -->
+    <section class="feature feature-dark" aria-labelledby="f3">
+      <h2 id="f3" class="h2" data-reveal>Open files from Terminal with <code>df</code>.</h2>
+      <p class="sub" data-reveal>It works the way <code>code</code> does for VS Code, and the app installs it for you.</p>
+      <div class="term-stage" data-term data-reveal>
+        <div class="term" role="img" aria-label="A terminal: df opens files in Doc Forge, offers to create new ones, and df -h still shows disk space.">
+          <div class="term-bar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span>~/novel</span></div>
+          <pre class="term-body" data-term-body></pre>
+        </div>
+        <div class="pop" data-pop aria-hidden="true">
+          <div class="pop-title">ghost-chapter.md doesn&rsquo;t exist yet.</div>
+          <div class="pop-actions"><span>Cancel</span><b>Create</b></div>
+        </div>
+        <div class="mini-win" data-mini aria-hidden="true">
+          <div class="mini-bar"><span class="lights"><i></i><i></i><i></i></span><b>chapter-7.md</b></div>
+          <div class="mini-body"><i style="width:46%"></i><i></i><i></i><i style="width:72%"></i><i></i><i style="width:58%"></i></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Models -->
+    <section class="feature feature-tight" aria-labelledby="f4">
+      <h2 id="f4" class="h2" data-reveal>Use your own model and key.</h2>
+      <p class="sub" data-reveal>Forge talks to the provider directly, and the key stays on your Mac.</p>
+      <ul class="providers" data-reveal aria-label="Supported providers">
+        <li>Fireworks</li><li>Anthropic</li><li>OpenAI</li><li>OpenRouter</li><li>Ollama</li>
+      </ul>
+    </section>
+
+    <!-- Close -->
+    <section class="closing" aria-labelledby="close">
+      <h2 id="close" class="begin" data-begin>
+        <span>Begin here.</span><span class="caret" aria-hidden="true"></span>
+        <svg class="begin-line" viewBox="0 0 600 30" preserveAspectRatio="none" aria-hidden="true"><path d="M6 18 C 90 8, 180 24, 280 14 S 470 6, 594 16" pathLength="1" /></svg>
+        <i class="begin-nib" aria-hidden="true"></i>
+      </h2>
+      <a class="btn btn-ink btn-lg" href="downloads/Doc-Forge.dmg" download>
+        <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M8 2.5v8m0 0L4.75 7.25M8 10.5l3.25-3.25M3 13.5h10" /></svg>
+        Download for Mac
+      </a>
+      <p class="meta">Preview builds aren&rsquo;t notarized yet, so macOS asks you to approve the first launch in System Settings. <a href="downloads/Doc-Forge.dmg.sha256">SHA-256</a></p>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <span class="brand"><img src="assets/icon-64.png" width="18" height="18" alt="" /><span>Doc Forge</span></span>
+    <span>Set in Literata and IBM Plex</span>
+  </footer>
+
+  <script src="main.js" defer></script>
+</body>
+</html>
